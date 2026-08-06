@@ -5,8 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>Vergen — премиальный бренд одежды</title>
     
-    <!-- Подключаем фавикон сайта (в формате JPG) -->
+    <!-- Фавикон (расширено для поисковиков) -->
     <link rel="icon" type="image/jpeg" href="favicon.jpg" />
+    <link rel="shortcut icon" type="image/jpeg" href="favicon.jpg" />
     <link rel="apple-touch-icon" href="favicon.jpg" />
     
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -44,6 +45,31 @@
         
         html { scroll-behavior: smooth; }
 
+        /* Кастомный премиум-курсор (только для ПК) */
+        @media (min-width: 768px) {
+            body { cursor: none; }
+            a, button, input { cursor: none; }
+            .custom-cursor {
+                position: fixed;
+                top: 0; left: 0;
+                width: 10px;
+                height: 10px;
+                background: #1B365D;
+                border-radius: 50%;
+                pointer-events: none;
+                z-index: 999999;
+                transform: translate(-50%, -50%);
+                transition: transform 0.25s ease-out, background 0.25s ease-out, width 0.25s ease, height 0.25s ease;
+            }
+            .custom-cursor.hover {
+                width: 40px;
+                height: 40px;
+                background: rgba(27, 54, 93, 0.15);
+                backdrop-filter: blur(2px);
+                border: 1px solid #1B365D;
+            }
+        }
+
         .fade-in-section {
             opacity: 0;
             transform: translateY(20px);
@@ -70,6 +96,9 @@
 </head>
 <body class="bg-milk text-charcoal font-sans antialiased overflow-x-hidden">
 
+    <!-- Точка кастомного курсора -->
+    <div class="custom-cursor hidden md:block" id="cursor"></div>
+
     <div id="global-loader" class="fixed inset-0 z-[99999] bg-milk/90 backdrop-blur-md hidden flex-col items-center justify-center opacity-0 transition-opacity duration-300">
         <div class="w-12 h-12 border-2 border-sand border-t-navy rounded-full animate-spin mb-4"></div>
         <p class="font-serif tracking-[0.2em] text-navy uppercase text-[10px]">Пожалуйста, подождите...</p>
@@ -80,35 +109,35 @@
         <div id="logo-wrap" class="font-serif text-5xl md:text-7xl tracking-[0.2em] text-charcoal font-light border-r-2 border-charcoal/85 pr-2 animate-blink whitespace-nowrap overflow-hidden flex items-center" style="height: 1.2em; min-width: 1px;"></div>
     </div>
 
-    <header class="fixed top-0 left-0 w-full z-40 bg-milk/90 backdrop-blur-md border-b border-sand/30 py-4 px-5 md:px-12 flex justify-between items-center transition-all">
+    <header class="fixed top-0 left-0 w-full z-40 bg-milk/90 backdrop-blur-md border-b border-sand/30 py-4 px-5 md:px-12 flex justify-between items-center transition-all hover-target">
         <!-- Логотип -->
         <div class="font-serif text-xl tracking-[0.2em] text-charcoal font-medium z-50">
-            <a href="#">VERGEN</a>
+            <a href="#" class="hover-target">VERGEN</a>
         </div>
         
         <!-- Навигация Десктоп -->
         <nav class="hidden md:flex space-x-10 text-[11px] tracking-[0.15em] uppercase font-light text-charcoal/70">
-            <a href="#about" class="hover:text-navy transition-colors">Летописи</a>
-            <a href="#pants-preview" class="hover:text-navy transition-colors">Вдохновение</a>
-            <a href="#catalog" class="hover:text-navy transition-colors">Коллекция</a>
+            <a href="#about" class="hover:text-navy transition-colors hover-target">Летописи</a>
+            <a href="#pants-preview" class="hover:text-navy transition-colors hover-target">Вдохновение</a>
+            <a href="#catalog" class="hover:text-navy transition-colors hover-target">Коллекция</a>
         </nav>
         
         <!-- Иконки и Бургер -->
         <div class="flex items-center space-x-4 md:space-x-6 text-[11px] tracking-[0.15em] uppercase font-light z-50">
-            <button onclick="toggleCartDrawer()" class="relative hover:text-navy transition-colors flex items-center">
+            <button onclick="toggleCartDrawer()" class="relative hover:text-navy transition-colors flex items-center hover-target">
                 <span class="hidden md:inline mr-1">Корзина</span>
                 <i class="fa-solid fa-bag-shopping md:hidden text-lg"></i>
                 <span class="md:hidden ml-1 text-xs" id="cart-count-mobile">0</span>
                 <span class="hidden md:inline">(<span id="cart-count">0</span>)</span>
             </button>
             
-            <button onclick="handleProfileClick()" class="hover:text-navy transition-colors flex items-center space-x-1.5" title="Личный кабинет">
+            <button onclick="handleProfileClick()" class="hover:text-navy transition-colors flex items-center space-x-1.5 hover-target" title="Личный кабинет">
                 <i class="fa-regular fa-user text-lg md:text-sm"></i>
                 <span class="hidden md:inline" id="profile-btn-text">Войти</span>
             </button>
 
-            <!-- Бургер-меню (только мобилки) -->
-            <button onclick="toggleMobileMenu()" class="md:hidden text-xl text-charcoal hover:text-navy transition-colors ml-2">
+            <!-- Бургер-меню -->
+            <button onclick="toggleMobileMenu()" class="md:hidden text-xl text-charcoal hover:text-navy transition-colors ml-2 hover-target">
                 <i class="fa-solid fa-bars" id="burger-icon"></i>
             </button>
         </div>
@@ -128,12 +157,12 @@
         </div>
     </div>
 
-    <section class="relative w-full h-screen bg-cover bg-center flex items-end pb-20 px-6 md:px-16" style="background-image: linear-gradient(rgba(248, 246, 242, 0.1), rgba(248, 246, 242, 0.6)), url('mainImage.jpg');">
+    <section class="relative w-full h-screen bg-cover bg-center flex items-end pb-20 px-6 md:px-16 hover-target" style="background-image: linear-gradient(rgba(248, 246, 242, 0.1), rgba(248, 246, 242, 0.6)), url('mainImage.jpg');">
         <div class="max-w-xl bg-milk/60 backdrop-blur-md p-6 md:p-10 rounded-sm border border-white/30">
             <p class="font-serif italic text-xl md:text-3xl text-charcoal/90 mb-3 leading-relaxed">«Vergen»</p>
             <h1 class="font-serif text-3xl md:text-5xl font-light tracking-wide text-navy mb-4 md:mb-6 leading-tight">Искусство выглядеть расслабленно.</h1>
             <p class="text-charcoal/80 font-light text-sm md:text-base leading-relaxed mb-6 md:mb-8">Наша летняя капсула создана для неспешных прогулок у моря и тихих утренних ритуалов.</p>
-            <a href="#catalog" class="inline-block border border-charcoal text-charcoal uppercase tracking-[0.2em] text-[10px] md:text-[11px] px-6 py-3 md:px-8 md:py-4 hover:bg-charcoal hover:text-milk transition-all duration-500 w-full sm:w-auto text-center">
+            <a href="#catalog" class="hover-target inline-block border border-charcoal text-charcoal uppercase tracking-[0.2em] text-[10px] md:text-[11px] px-6 py-3 md:px-8 md:py-4 hover:bg-charcoal hover:text-milk transition-all duration-500 w-full sm:w-auto text-center">
                 Исследовать коллекцию
             </a>
         </div>
@@ -151,10 +180,10 @@
 
     <section id="pants-preview" class="py-16 md:py-24 px-6 md:px-16 bg-beige fade-in-section">
         <div class="max-w-6xl mx-auto">
-            <div class="relative group overflow-hidden bg-[#D3CFC9] h-[500px] md:h-[650px] flex items-center justify-center">
+            <div class="relative group overflow-hidden bg-[#D3CFC9] h-[500px] md:h-[650px] flex items-center justify-center hover-target">
                 <div class="absolute inset-0 bg-cover bg-center transition-transform duration-1000 group-hover:scale-105 filter brightness-95" style="background-image: url('trousersPhotoSessa5.jpg');"></div>
                 <div class="absolute inset-0 bg-charcoal/5"></div>
-                <div class="absolute bottom-8 left-8 right-8 bg-milk/90 backdrop-blur-sm p-6 border border-sand">
+                <div class="absolute bottom-8 left-8 right-8 bg-milk/90 backdrop-blur-sm p-6 border border-sand transition-all group-hover:bg-milk">
                     <p class="text-[10px] uppercase tracking-[0.2em] text-charcoal/50 mb-1">Капсула: В процессе</p>
                     <p class="font-serif text-lg text-charcoal">Фотосессия коллекции проходит на острове Искья, Италия.</p>
                 </div>
@@ -175,10 +204,10 @@
             
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-10">
                 <!-- Товар 1 -->
-                <div class="group cursor-pointer flex flex-col" onclick="openProductPreview('pants1')">
+                <div class="group cursor-pointer flex flex-col hover-target" onclick="openProductPreview('pants1')">
                     <div class="relative overflow-hidden bg-[#E2DFD9] aspect-[3/4] mb-4 md:mb-5">
                         <img src="tovarTrou2.jpg" loading="lazy" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" alt="Брюки Лагуна">
-                        <button onclick="event.stopPropagation(); openSizeSelector('pants1')" class="absolute bottom-0 left-0 right-0 bg-milk/95 backdrop-blur-md py-4 text-[10px] uppercase tracking-[0.15em] text-charcoal translate-y-full group-hover:translate-y-0 transition-transform duration-300 hover:bg-navy hover:text-white z-10 font-medium shadow-[0_-10px_20px_rgba(0,0,0,0.05)]">
+                        <button onclick="event.stopPropagation(); openSizeSelector('pants1')" class="absolute bottom-0 left-0 right-0 bg-milk/95 backdrop-blur-md py-4 text-[10px] uppercase tracking-[0.15em] text-charcoal translate-y-full group-hover:translate-y-0 transition-transform duration-300 hover:bg-navy hover:text-white z-10 font-medium hover-target">
                             Добавить в корзину
                         </button>
                     </div>
@@ -191,10 +220,10 @@
                 </div>
 
                 <!-- Товар 2 -->
-                <div class="group cursor-pointer flex flex-col" onclick="openProductPreview('pants2')">
+                <div class="group cursor-pointer flex flex-col hover-target" onclick="openProductPreview('pants2')">
                     <div class="relative overflow-hidden bg-[#E2DFD9] aspect-[3/4] mb-4 md:mb-5">
                         <img src="tovarTrou4.jpeg" loading="lazy" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" alt="Брючки Сучки">
-                        <button onclick="event.stopPropagation(); openSizeSelector('pants2')" class="absolute bottom-0 left-0 right-0 bg-milk/95 backdrop-blur-md py-4 text-[10px] uppercase tracking-[0.15em] text-charcoal translate-y-full group-hover:translate-y-0 transition-transform duration-300 hover:bg-navy hover:text-white z-10 font-medium shadow-[0_-10px_20px_rgba(0,0,0,0.05)]">
+                        <button onclick="event.stopPropagation(); openSizeSelector('pants2')" class="absolute bottom-0 left-0 right-0 bg-milk/95 backdrop-blur-md py-4 text-[10px] uppercase tracking-[0.15em] text-charcoal translate-y-full group-hover:translate-y-0 transition-transform duration-300 hover:bg-navy hover:text-white z-10 font-medium hover-target">
                             Добавить в корзину
                         </button>
                     </div>
@@ -207,10 +236,10 @@
                 </div>
 
                 <!-- Товар 3 -->
-                <div class="group cursor-pointer flex flex-col" onclick="openProductPreview('pants3')">
+                <div class="group cursor-pointer flex flex-col hover-target" onclick="openProductPreview('pants3')">
                     <div class="relative overflow-hidden bg-[#E2DFD9] aspect-[3/4] mb-4 md:mb-5">
                         <img src="tovarTrou3.jpg" loading="lazy" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" alt="Брючки Топленое молоко">
-                        <button onclick="event.stopPropagation(); openSizeSelector('pants3')" class="absolute bottom-0 left-0 right-0 bg-milk/95 backdrop-blur-md py-4 text-[10px] uppercase tracking-[0.15em] text-charcoal translate-y-full group-hover:translate-y-0 transition-transform duration-300 hover:bg-navy hover:text-white z-10 font-medium shadow-[0_-10px_20px_rgba(0,0,0,0.05)]">
+                        <button onclick="event.stopPropagation(); openSizeSelector('pants3')" class="absolute bottom-0 left-0 right-0 bg-milk/95 backdrop-blur-md py-4 text-[10px] uppercase tracking-[0.15em] text-charcoal translate-y-full group-hover:translate-y-0 transition-transform duration-300 hover:bg-navy hover:text-white z-10 font-medium hover-target">
                             Добавить в корзину
                         </button>
                     </div>
@@ -236,14 +265,14 @@
             <div>
                 <h4 class="font-serif text-base font-medium mb-4 text-milk/80">Навигация</h4>
                 <ul class="space-y-3 text-sm font-light text-milk/50">
-                    <li><a href="#about" class="hover:text-white transition-colors">Философия</a></li>
-                    <li><a href="#catalog" class="hover:text-white transition-colors">Капсула</a></li>
+                    <li><a href="#about" class="hover-target hover:text-white transition-colors">Философия</a></li>
+                    <li><a href="#catalog" class="hover-target hover:text-white transition-colors">Капсула</a></li>
                 </ul>
             </div>
             <div>
                 <h4 class="font-serif text-base font-medium mb-4 text-milk/80">Связь</h4>
                 <ul class="space-y-3 text-sm font-light text-milk/50">
-                    <li><a href="https://t.me/Teamtasher" target="_blank" class="hover:text-white transition-colors"><i class="fa-brands fa-telegram mr-2"></i>Telegram</a></li>
+                    <li><a href="https://t.me/Teamtasher" target="_blank" class="hover-target hover:text-white transition-colors"><i class="fa-brands fa-telegram mr-2"></i>Telegram</a></li>
                     <li><span>support@vergenbrand.com</span></li>
                 </ul>
             </div>
@@ -263,7 +292,7 @@
     <div id="cart-drawer" class="fixed inset-y-0 right-0 z-50 w-full sm:w-[400px] bg-milk shadow-2xl border-l border-sand transform translate-x-full transition-transform duration-500 flex flex-col">
         <div class="p-5 md:p-6 border-b border-sand flex justify-between items-center bg-beige">
             <h3 class="font-serif text-xl md:text-2xl text-charcoal">Корзина</h3>
-            <button onclick="toggleCartDrawer()" class="text-charcoal/50 hover:text-charcoal text-2xl px-2">
+            <button onclick="toggleCartDrawer()" class="text-charcoal/50 hover:text-charcoal text-2xl px-2 hover-target">
                 <i class="fa-solid fa-xmark"></i>
             </button>
         </div>
@@ -281,9 +310,9 @@
             <div id="order-form-container" class="hidden flex-col space-y-3 relative">
                 <input type="hidden" id="order-item" value="">
                 <input type="hidden" id="order-price" value="">
-                <button type="button" onclick="makeOrder(event)" class="w-full bg-navy text-white text-[10px] md:text-xs uppercase tracking-[0.2em] py-4 hover:bg-charcoal transition-all font-medium">Оформить заказ в Telegram</button>
+                <button type="button" onclick="makeOrder(event)" class="hover-target w-full bg-navy text-white text-[10px] md:text-xs uppercase tracking-[0.2em] py-4 hover:bg-charcoal transition-all font-medium">Оформить заказ в Telegram</button>
             </div>
-            <button id="checkout-btn" onclick="showOrderForm()" class="w-full bg-charcoal text-milk text-[10px] md:text-xs uppercase tracking-[0.2em] py-4 hover:bg-navy transition-all font-medium">
+            <button id="checkout-btn" onclick="showOrderForm()" class="hover-target w-full bg-charcoal text-milk text-[10px] md:text-xs uppercase tracking-[0.2em] py-4 hover:bg-navy transition-all font-medium">
                 Перейти к оформлению
             </button>
         </div>
@@ -293,7 +322,7 @@
     <div id="profile-drawer" class="fixed inset-y-0 right-0 z-50 w-full sm:w-[400px] bg-milk shadow-2xl border-l border-sand transform translate-x-full transition-transform duration-500 flex flex-col">
         <div class="p-5 md:p-6 border-b border-sand flex justify-between items-center bg-beige">
             <h3 class="font-serif text-xl md:text-2xl text-charcoal">Личный кабинет</h3>
-            <button onclick="toggleProfileDrawer()" class="text-charcoal/50 hover:text-charcoal text-2xl px-2">
+            <button onclick="toggleProfileDrawer()" class="text-charcoal/50 hover:text-charcoal text-2xl px-2 hover-target">
                 <i class="fa-solid fa-xmark"></i>
             </button>
         </div>
@@ -308,7 +337,7 @@
                     <p id="profile-email" class="text-sm font-medium text-charcoal break-all"></p>
                 </div>
             </div>
-            <button onclick="handleLogout()" class="text-[10px] uppercase tracking-[0.15em] text-red-500 hover:text-red-700 transition-colors flex items-center space-x-2 self-start bg-red-50 px-3 py-2 rounded-sm">
+            <button onclick="handleLogout()" class="hover-target text-[10px] uppercase tracking-[0.15em] text-red-500 hover:text-red-700 transition-colors flex items-center space-x-2 self-start bg-red-50 px-3 py-2 rounded-sm">
                 <i class="fa-solid fa-arrow-right-from-bracket"></i>
                 <span>Выйти из аккаунта</span>
             </button>
@@ -326,55 +355,58 @@
     <div id="auth-modal" class="fixed inset-0 z-[100] flex items-center justify-center hidden opacity-0 transition-opacity duration-300 px-4">
         <div class="absolute inset-0 bg-charcoal/50 backdrop-blur-sm" onclick="closeAuthModal()"></div>
         <div class="bg-milk p-6 md:p-8 max-w-sm w-full relative z-10 border border-sand shadow-2xl">
-            <button onclick="closeAuthModal()" class="absolute top-4 right-4 text-charcoal/40 hover:text-charcoal text-xl p-2">
+            <button onclick="closeAuthModal()" class="absolute top-4 right-4 text-charcoal/40 hover:text-charcoal text-xl p-2 hover-target">
                 <i class="fa-solid fa-xmark"></i>
             </button>
             
             <div class="flex border-b border-sand mb-6 pt-2">
-                <button id="tab-login" onclick="switchAuthTab('login')" class="flex-1 pb-3 text-xs md:text-sm uppercase tracking-[0.15em] border-b-2 border-charcoal font-medium text-charcoal">Вход</button>
-                <button id="tab-register" onclick="switchAuthTab('register')" class="flex-1 pb-3 text-xs md:text-sm uppercase tracking-[0.15em] border-b-2 border-transparent text-charcoal/40 hover:text-charcoal transition-colors">Создать</button>
+                <button id="tab-login" onclick="switchAuthTab('login')" class="hover-target flex-1 pb-3 text-xs md:text-sm uppercase tracking-[0.15em] border-b-2 border-charcoal font-medium text-charcoal">Вход</button>
+                <button id="tab-register" onclick="switchAuthTab('register')" class="hover-target flex-1 pb-3 text-xs md:text-sm uppercase tracking-[0.15em] border-b-2 border-transparent text-charcoal/40 hover:text-charcoal transition-colors">Создать</button>
             </div>
 
             <!-- Вход -->
             <div id="form-login" class="space-y-4">
                 <p class="text-xs text-charcoal/50 font-light mb-4 leading-relaxed" id="auth-prompt-msg">Рады видеть вас снова.</p>
-                <input type="email" id="login-email" placeholder="Email" class="w-full bg-white border border-sand px-4 py-3.5 text-sm focus:outline-none focus:border-navy transition-colors">
-                <input type="password" id="login-password" placeholder="Пароль" class="w-full bg-white border border-sand px-4 py-3.5 text-sm focus:outline-none focus:border-navy transition-colors">
-                <button type="button" onclick="handleLoginSubmit(event)" class="w-full bg-navy text-white text-[10px] uppercase tracking-[0.2em] py-4 hover:bg-charcoal transition-all duration-300 font-medium mt-2">Войти</button>
+                <input type="email" id="login-email" placeholder="Email" class="w-full bg-white border border-sand px-4 py-3.5 text-sm focus:outline-none focus:border-navy transition-colors hover-target">
+                <input type="password" id="login-password" placeholder="Пароль" class="w-full bg-white border border-sand px-4 py-3.5 text-sm focus:outline-none focus:border-navy transition-colors hover-target">
+                <button type="button" onclick="handleLoginSubmit(event)" class="hover-target w-full bg-navy text-white text-[10px] uppercase tracking-[0.2em] py-4 hover:bg-charcoal transition-all duration-300 font-medium mt-2">Войти</button>
             </div>
 
             <!-- Регистрация -->
             <div id="form-register" class="space-y-4 hidden">
                 <p class="text-xs text-charcoal/50 font-light mb-4 leading-relaxed">Создайте аккаунт для сохранения истории покупок.</p>
-                <input type="text" id="reg-name" placeholder="Имя" class="w-full bg-white border border-sand px-4 py-3.5 text-sm focus:outline-none focus:border-navy transition-colors">
-                <input type="email" id="reg-email" placeholder="Email" class="w-full bg-white border border-sand px-4 py-3.5 text-sm focus:outline-none focus:border-navy transition-colors">
-                <input type="password" id="reg-pass" placeholder="Пароль" class="w-full bg-white border border-sand px-4 py-3.5 text-sm focus:outline-none focus:border-navy transition-colors">
-                <button type="button" onclick="registerUser(event)" class="w-full bg-charcoal text-milk text-[10px] uppercase tracking-[0.2em] py-4 hover:bg-navy transition-all duration-300 font-medium mt-2">Зарегистрироваться</button>
+                <input type="text" id="reg-name" placeholder="Имя" class="w-full bg-white border border-sand px-4 py-3.5 text-sm focus:outline-none focus:border-navy transition-colors hover-target">
+                <input type="email" id="reg-email" placeholder="Email" class="w-full bg-white border border-sand px-4 py-3.5 text-sm focus:outline-none focus:border-navy transition-colors hover-target">
+                <input type="password" id="reg-pass" placeholder="Пароль" class="w-full bg-white border border-sand px-4 py-3.5 text-sm focus:outline-none focus:border-navy transition-colors hover-target">
+                <button type="button" onclick="registerUser(event)" class="hover-target w-full bg-charcoal text-milk text-[10px] uppercase tracking-[0.2em] py-4 hover:bg-navy transition-all duration-300 font-medium mt-2">Зарегистрироваться</button>
             </div>
         </div>
     </div>
 
     <div id="custom-alert" class="fixed inset-0 bg-charcoal/60 backdrop-blur-md z-[100000] hidden flex-col items-center justify-center opacity-0 transition-opacity duration-300 px-4">
         <div class="bg-milk p-8 max-w-sm w-full border border-sand text-center shadow-2xl relative transform scale-95 transition-transform duration-300" id="custom-alert-box">
-            <button onclick="closeAlert()" class="absolute top-4 right-4 text-charcoal/30 hover:text-charcoal"><i class="fa-solid fa-xmark text-xl"></i></button>
+            <button onclick="closeAlert()" class="absolute top-4 right-4 text-charcoal/30 hover:text-charcoal hover-target"><i class="fa-solid fa-xmark text-xl"></i></button>
             <div id="alert-icon" class="text-5xl mb-5 text-navy">
                 <i class="fa-regular fa-circle-check"></i>
             </div>
             <h3 id="alert-title" class="font-serif text-2xl text-charcoal mb-3">Успешно</h3>
             <p id="alert-message" class="text-charcoal/60 font-light text-sm mb-8 leading-relaxed">Действие выполнено.</p>
-            <button onclick="closeAlert()" class="w-full bg-charcoal text-milk py-3.5 text-[10px] uppercase tracking-[0.2em] hover:bg-navy transition-colors font-medium">Отлично</button>
+            <button onclick="closeAlert()" class="hover-target w-full bg-charcoal text-milk py-3.5 text-[10px] uppercase tracking-[0.2em] hover:bg-navy transition-colors font-medium">Отлично</button>
         </div>
     </div>
 
     <div id="product-modal" class="fixed inset-0 z-[80] flex items-center justify-center hidden opacity-0 transition-opacity duration-300 px-4">
         <div class="absolute inset-0 bg-charcoal/60 backdrop-blur-sm" onclick="closeProductModal()"></div>
         <div class="bg-milk max-w-3xl w-full relative z-10 border border-sand flex flex-col md:flex-row overflow-hidden max-h-[90vh] md:max-h-[600px] shadow-2xl">
-            <button onclick="closeProductModal()" class="absolute top-3 right-3 md:top-4 md:right-4 text-charcoal z-20 bg-milk/90 backdrop-blur-sm rounded-full w-8 h-8 flex items-center justify-center shadow-md">
+            <button onclick="closeProductModal()" class="absolute top-3 right-3 md:top-4 md:right-4 text-charcoal z-20 bg-milk/90 backdrop-blur-sm rounded-full w-8 h-8 flex items-center justify-center shadow-md hover-target">
                 <i class="fa-solid fa-xmark"></i>
             </button>
-            <div class="w-full md:w-1/2 bg-[#E2DFD9] h-64 md:h-auto">
-                <img id="modal-product-img" src="" class="w-full h-full object-cover object-top" alt="">
+            
+            <!-- Оптимизация: Эффект лупы (Zoom) при наведении на фото товара -->
+            <div class="w-full md:w-1/2 bg-[#E2DFD9] h-64 md:h-auto overflow-hidden group">
+                <img id="modal-product-img" src="" class="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-110" alt="">
             </div>
+            
             <div class="w-full md:w-1/2 p-6 md:p-10 flex flex-col justify-between space-y-6 overflow-y-auto">
                 <div>
                     <span id="modal-product-tag" class="text-[10px] uppercase tracking-[0.2em] text-charcoal/50 block mb-2"></span>
@@ -386,7 +418,7 @@
                         <span class="text-charcoal/50 text-xs font-light uppercase tracking-widest">Стоимость</span>
                         <span id="modal-product-price" class="font-serif text-2xl text-navy"></span>
                     </div>
-                    <button id="modal-add-btn" class="w-full bg-charcoal text-milk text-[10px] uppercase tracking-[0.2em] py-4 hover:bg-navy transition-all font-medium">
+                    <button id="modal-add-btn" class="hover-target w-full bg-charcoal text-milk text-[10px] uppercase tracking-[0.2em] py-4 hover:bg-navy transition-all font-medium">
                         Выбрать размер
                     </button>
                 </div>
@@ -397,24 +429,41 @@
     <div id="size-modal" class="fixed inset-0 z-[90] flex items-center justify-center hidden opacity-0 transition-opacity duration-300 px-4">
         <div class="absolute inset-0 bg-charcoal/60 backdrop-blur-sm" onclick="closeSizeModal()"></div>
         <div class="bg-milk p-6 md:p-8 max-w-[320px] w-full relative z-10 border border-sand text-center shadow-2xl">
-            <button onclick="closeSizeModal()" class="absolute top-3 right-3 text-charcoal/40 hover:text-charcoal p-2">
+            <button onclick="closeSizeModal()" class="absolute top-3 right-3 text-charcoal/40 hover:text-charcoal p-2 hover-target">
                 <i class="fa-solid fa-xmark"></i>
             </button>
             <h3 class="font-serif text-xl text-charcoal mb-1">Размер</h3>
             <p id="size-product-name" class="text-charcoal/50 font-light text-xs mb-6 truncate px-4"></p>
             <div class="grid grid-cols-2 gap-3 mb-2">
-                <button onclick="selectSizeAndAdd('S')" class="border border-sand py-3 text-sm hover:border-charcoal hover:bg-charcoal hover:text-milk transition-all font-light">S</button>
-                <button onclick="selectSizeAndAdd('M')" class="border border-sand py-3 text-sm hover:border-charcoal hover:bg-charcoal hover:text-milk transition-all font-light">M</button>
-                <button onclick="selectSizeAndAdd('L')" class="border border-sand py-3 text-sm hover:border-charcoal hover:bg-charcoal hover:text-milk transition-all font-light">L</button>
-                <button onclick="selectSizeAndAdd('XL')" class="border border-sand py-3 text-sm hover:border-charcoal hover:bg-charcoal hover:text-milk transition-all font-light">XL</button>
+                <button onclick="selectSizeAndAdd('S')" class="hover-target border border-sand py-3 text-sm hover:border-charcoal hover:bg-charcoal hover:text-milk transition-all font-light">S</button>
+                <button onclick="selectSizeAndAdd('M')" class="hover-target border border-sand py-3 text-sm hover:border-charcoal hover:bg-charcoal hover:text-milk transition-all font-light">M</button>
+                <button onclick="selectSizeAndAdd('L')" class="hover-target border border-sand py-3 text-sm hover:border-charcoal hover:bg-charcoal hover:text-milk transition-all font-light">L</button>
+                <button onclick="selectSizeAndAdd('XL')" class="hover-target border border-sand py-3 text-sm hover:border-charcoal hover:bg-charcoal hover:text-milk transition-all font-light">XL</button>
             </div>
         </div>
     </div>
 
     <script>
         const TELEGRAM_USERNAME = "Teamtasher";
-        // ЗАМЕНИ НА СВОЙ RENDER URL
-        const SERVER_URL = 'https://vergen-backend.onrender.com'; 
+        // ВАЖНО: Замени на свой новый поддомен api.vergen.group, когда пропишешь его в Render!
+        const SERVER_URL = 'https://api.vergen.group'; 
+        // Временно, пока не пропишешь домен, оставь: const SERVER_URL = 'https://vergen-backend.onrender.com';
+
+        // Логика кастомного курсора
+        document.addEventListener('DOMContentLoaded', () => {
+            const cursor = document.getElementById('cursor');
+            if (window.innerWidth > 768 && cursor) {
+                document.addEventListener('mousemove', (e) => {
+                    cursor.style.left = e.clientX + 'px';
+                    cursor.style.top = e.clientY + 'px';
+                });
+
+                document.querySelectorAll('.hover-target, button, a').forEach(el => {
+                    el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
+                    el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
+                });
+            }
+        });
 
         const products = {
             'pants1': { name: 'Брюки', price: 14500, img: 'tovarTrou2.jpg', tag: 'Лагуна', desc: 'Свободный крой и премиальный материал. Эти брюки дарят ощущение абсолютной свободы движения и легкой прохлады даже в самый жаркий летний день.'},
@@ -463,7 +512,7 @@
         }, observerOptions);
         document.querySelectorAll('.fade-in-section').forEach(section => observer.observe(section));
 
-        // UI ФУНКЦИИ (Меню, Лоадер, Алерт)
+        // UI ФУНКЦИИ
         function toggleMobileMenu() {
             const menu = document.getElementById('mobile-menu');
             const icon = document.getElementById('burger-icon');
@@ -577,10 +626,10 @@
                 const btn = document.getElementById(tabs[key].btn);
                 const form = document.getElementById(tabs[key].form);
                 if (key === tab) {
-                    btn.className = "flex-1 pb-3 text-xs md:text-sm uppercase tracking-[0.15em] border-b-2 border-charcoal font-medium text-charcoal";
+                    btn.className = "hover-target flex-1 pb-3 text-xs md:text-sm uppercase tracking-[0.15em] border-b-2 border-charcoal font-medium text-charcoal";
                     form.classList.remove('hidden');
                 } else {
-                    btn.className = "flex-1 pb-3 text-xs md:text-sm uppercase tracking-[0.15em] border-b-2 border-transparent text-charcoal/40 hover:text-charcoal transition-colors";
+                    btn.className = "hover-target flex-1 pb-3 text-xs md:text-sm uppercase tracking-[0.15em] border-b-2 border-transparent text-charcoal/40 hover:text-charcoal transition-colors";
                     form.classList.add('hidden');
                 }
             }
@@ -621,7 +670,7 @@
                 }
             } catch (error) {
                 hideLoader();
-                showCustomAlert("Ошибка сети", "Сервер недоступен. Попробуйте позже.", true);
+                showCustomAlert("Ошибка сети", "Не удалось подключиться к серверу (VPN / Блокировка РКН). Пропишите Custom Domain в Render.", true);
             }
         }
 
@@ -668,7 +717,7 @@
                 }
             } catch (error) {
                 hideLoader();
-                showCustomAlert("Ошибка сети", "Сервер недоступен.", true);
+                showCustomAlert("Ошибка сети", "Не удалось подключиться к серверу (VPN / Блокировка РКН). Пропишите Custom Domain в Render.", true);
             }
         }
 
@@ -691,7 +740,6 @@
                 hideLoader();
 
                 if (response.ok) {
-                    // Локальное сохранение для отображения в ЛК
                     const users = JSON.parse(localStorage.getItem('vergen_users')) || [];
                     const userIndex = users.findIndex(u => u.email.toLowerCase() === currentUser.toLowerCase());
                     if (userIndex !== -1) {
@@ -722,7 +770,7 @@
                 }
             } catch (error) {
                 hideLoader();
-                showCustomAlert("Ошибка сети", "Сервер недоступен.", true);
+                showCustomAlert("Ошибка сети", "Не удалось подключиться к серверу (VPN / Блокировка РКН). Пропишите Custom Domain в Render.", true);
             }
         }
 
@@ -817,7 +865,7 @@
                 totalSum += item.price * item.qty;
                 totalCount += item.qty;
                 container.innerHTML += `
-                    <div class="flex items-center justify-between border-b border-sand/60 pb-5">
+                    <div class="flex items-center justify-between border-b border-sand/60 pb-5 hover-target">
                         <div class="flex items-center space-x-4">
                             <img src="${item.img}" class="w-16 h-20 object-cover bg-sand" alt="${item.name}" loading="lazy">
                             <div>
@@ -827,11 +875,11 @@
                             </div>
                         </div>
                         <div class="flex flex-col items-end space-y-3">
-                            <button onclick="changeQty(${index}, -99)" class="text-charcoal/20 hover:text-red-500 transition-colors"><i class="fa-solid fa-xmark"></i></button>
+                            <button onclick="changeQty(${index}, -99)" class="text-charcoal/20 hover:text-red-500 transition-colors hover-target"><i class="fa-solid fa-xmark"></i></button>
                             <div class="flex items-center space-x-2 border border-sand bg-white px-2 py-1 select-none">
-                                <button onclick="changeQty(${index}, -1)" class="w-5 hover:text-navy transition-colors">-</button>
+                                <button onclick="changeQty(${index}, -1)" class="w-5 hover:text-navy transition-colors hover-target">-</button>
                                 <span class="w-4 text-center text-xs">${item.qty}</span>
-                                <button onclick="changeQty(${index}, 1)" class="w-5 hover:text-navy transition-colors">+</button>
+                                <button onclick="changeQty(${index}, 1)" class="w-5 hover:text-navy transition-colors hover-target">+</button>
                             </div>
                         </div>
                     </div>
