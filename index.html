@@ -5,10 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>Vergen — премиальный бренд одежды</title>
     
-    <!-- Фавикон (расширено для поисковиков) -->
-    <link rel="icon" type="image/jpeg" href="favicon.jpg" />
-    <link rel="shortcut icon" type="image/jpeg" href="favicon.jpg" />
-    <link rel="apple-touch-icon" href="favicon.jpg" />
+    <!-- Фавикон (теперь в формате PNG для правильной индексации поисковиками) -->
+    <link rel="icon" type="image/png" href="favicon.png" />
+    <link rel="shortcut icon" type="image/png" href="favicon.png" />
+    <link rel="apple-touch-icon" href="favicon.png" />
     
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -402,7 +402,6 @@
                 <i class="fa-solid fa-xmark"></i>
             </button>
             
-            <!-- Оптимизация: Эффект лупы (Zoom) при наведении на фото товара -->
             <div class="w-full md:w-1/2 bg-[#E2DFD9] h-64 md:h-auto overflow-hidden group">
                 <img id="modal-product-img" src="" class="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-110" alt="">
             </div>
@@ -445,9 +444,8 @@
 
     <script>
         const TELEGRAM_USERNAME = "Teamtasher";
-        // ВАЖНО: Замени на свой новый поддомен api.vergen.group, когда пропишешь его в Render!
+        // БОЛЬШЕ НИКАКИХ ONDERDER! ТОЛЬКО ТВОЙ ДОМЕН!
         const SERVER_URL = 'https://api.vergen.group'; 
-        // Временно, пока не пропишешь домен, оставь: const SERVER_URL = 'https://vergen-backend.onrender.com';
 
         // Логика кастомного курсора
         document.addEventListener('DOMContentLoaded', () => {
@@ -475,7 +473,6 @@
         let currentUser = localStorage.getItem('vergen_current_user') || null;
         let isCheckoutPending = false; 
 
-        // Интро анимация
         window.addEventListener('DOMContentLoaded', () => {
             const text = "VERGEN";
             const element = document.getElementById('logo-wrap');
@@ -500,7 +497,6 @@
             checkAuthState();
         });
 
-        // Intersection Observer
         const observerOptions = { root: null, rootMargin: '0px', threshold: 0.1 };
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
@@ -512,7 +508,6 @@
         }, observerOptions);
         document.querySelectorAll('.fade-in-section').forEach(section => observer.observe(section));
 
-        // UI ФУНКЦИИ
         function toggleMobileMenu() {
             const menu = document.getElementById('mobile-menu');
             const icon = document.getElementById('burger-icon');
@@ -580,7 +575,6 @@
             }, 300);
         }
 
-        // АВТОРИЗАЦИЯ
         function checkAuthState() {
             const btnText = document.getElementById('profile-btn-text');
             if (currentUser) {
@@ -635,7 +629,6 @@
             }
         }
 
-        // БЭКЕНД: ВХОД
         async function handleLoginSubmit(event) {
             if (event) event.preventDefault();
             const email = document.getElementById('login-email').value.trim();
@@ -670,11 +663,10 @@
                 }
             } catch (error) {
                 hideLoader();
-                showCustomAlert("Ошибка сети", "Не удалось подключиться к серверу (VPN / Блокировка РКН). Пропишите Custom Domain в Render.", true);
+                showCustomAlert("Ошибка сети", "Нет ответа от сервера.", true);
             }
         }
 
-        // БЭКЕНД: РЕГИСТРАЦИЯ
         async function registerUser(event) {
             if (event) event.preventDefault();
             const name = document.getElementById('reg-name').value.trim();
@@ -694,7 +686,6 @@
                 hideLoader();
 
                 if (response.ok) {
-                    // Синхронизация истории локально
                     const users = JSON.parse(localStorage.getItem('vergen_users')) || [];
                     if (!users.some(u => u.email.toLowerCase() === email.toLowerCase())) {
                         users.push({ email, username: name, orders: [] });
@@ -717,11 +708,10 @@
                 }
             } catch (error) {
                 hideLoader();
-                showCustomAlert("Ошибка сети", "Не удалось подключиться к серверу (VPN / Блокировка РКН). Пропишите Custom Domain в Render.", true);
+                showCustomAlert("Ошибка сети", "Нет ответа от сервера.", true);
             }
         }
 
-        // БЭКЕНД: ОФОРМЛЕНИЕ ЗАКАЗА
         async function makeOrder(event) {
             if (event) event.preventDefault();
             const item = document.getElementById('order-item').value;
@@ -770,7 +760,7 @@
                 }
             } catch (error) {
                 hideLoader();
-                showCustomAlert("Ошибка сети", "Не удалось подключиться к серверу (VPN / Блокировка РКН). Пропишите Custom Domain в Render.", true);
+                showCustomAlert("Ошибка сети", "Нет ответа от сервера.", true);
             }
         }
 
@@ -784,7 +774,6 @@
             document.getElementById('order-form-container').classList.add('hidden');
         }
 
-        // ОТРИСОВКА ИСТОРИИ И КОРЗИНЫ
         function renderOrderHistory() {
             const list = document.getElementById('profile-orders-list');
             if (!currentUser) return;
@@ -899,7 +888,6 @@
             updateCart();
         }
 
-        // Drawers Logic
         function toggleDrawer(drawerId, overlayId) {
             const drawer = document.getElementById(drawerId);
             const overlay = document.getElementById(overlayId);
@@ -931,7 +919,6 @@
             document.getElementById('order-form-container').classList.add('flex');
         }
 
-        // Product Modal Logic
         function openProductPreview(productKey) {
             const product = products[productKey];
             document.getElementById('modal-product-img').src = product.img;
